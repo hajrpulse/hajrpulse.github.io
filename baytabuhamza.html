@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>بيت أبو حمزة | Bayt Abu Hamza — مسلسل كرتوني عائلي كوميدي تعليمي وتربوي هادف (@baytabuhamza)</title>
+  <meta name="description" content="بيت أبو حمزة (@baytabuhamza) — مسلسل أنيميشن عائلي كوميدي تعليمي وتربوي هادف بتقنية ثلاثية الأبعاد (3D). يوميات دافئة وقيم تربوية نبيلة لكل عائلة في الوطن العربي والعالم." />
+  <meta name="keywords" content="بيت أبو حمزة, عائلة أبو حمزة, كرتون تعليمي, قصص عائلية هادفة, تربية إيجابية, كرتون عائلي, أنيميشن عربي, كوميديا عائلية, Bayt Abu Hamza, Educational Cartoon, Family Animation, Positive Parenting" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Cairo', system-ui, sans-serif;
+      background: radial-gradient(circle at top, #13203d 0%, #070b14 65%);
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 36px 18px 60px;
+    }
+    .card {
+      width: 100%;
+      max-width: 740px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid #a855f7;
+      border-radius: 24px;
+      padding: 32px 26px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(212, 175, 55, 0.14);
+      border: 1px solid #a855f7;
+      color: #f3e5ab;
+      padding: 5px 15px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    h1 { font-size: 2rem; font-weight: 900; margin-bottom: 8px; color: #fff; }
+    .sub { color: #cbd5e1; font-size: 1.02rem; line-height: 1.8; margin-bottom: 18px; }
+    .edu-box {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.14), rgba(212, 175, 55, 0.10));
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      border-radius: 16px;
+      padding: 16px 18px;
+      font-size: 0.92rem;
+      color: #f8fafc;
+      margin-bottom: 18px;
+      text-align: right;
+      line-height: 1.75;
+    }
+    .edu-box h3 {
+      color: #f3e5ab;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+    .meta-box {
+      background: rgba(30, 41, 59, 0.65);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+      text-align: right;
+      line-height: 1.7;
+    }
+    .tags-box {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px dashed rgba(56, 189, 248, 0.35);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 22px;
+      text-align: right;
+    }
+    .tags-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #38bdf8;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tags-text {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      line-height: 1.75;
+      word-break: break-word;
+    }
+    .copy-btn {
+      background: rgba(56, 189, 248, 0.16);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      border-radius: 8px;
+      padding: 3px 10px;
+      font-family: inherit;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .copy-btn:hover { background: rgba(56, 189, 248, 0.28); color: #fff; }
+    .links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+    .link-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 14px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 800;
+      transition: 0.2s;
+    }
+    .link-btn:hover {
+      transform: translateY(-2px);
+      border-color: #a855f7;
+      background: rgba(51, 65, 85, 0.9);
+    }
+    .l-plat { color: #f3e5ab; }
+    .l-handle { direction: ltr; font-family: monospace; color: #38bdf8; font-size: 0.95rem; }
+    .nav-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(148, 163, 184, 0.16);
+    }
+    .nav-bottom a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+    }
+    .nav-bottom a:hover { color: #fff; background: rgba(255,255,255,0.1); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <span class="badge">🏠 مسلسل كرتوني عائلي كوميدي تعليمي وتربوي هادف (3D)</span>
+    <h1>بيت أبو حمزة | Bayt Abu Hamza</h1>
+    <div style="color:#f3e5ab; font-weight:700; margin-bottom:10px;">Purposeful & Educational 3D Family Comedy Series (@baytabuhamza)</div>
+    <p class="sub">
+      يوميات ومواقف عائلية كوميدية دافئة وتعليمية هادفة بتقنية الأنيميشن ثلاثي الأبعاد مع عائلة أبو حمزة
+      (أبو حمزة، أم حمزة «ميساء»، آية، جنى، حمزة، والصغيرة رهف «رورو») — نجمع بين الضحكة الحلوة والرسالة التربوية الراقية لكل عائلة في الوطن العربي والعالم.
+    </p>
+
+    <div class="edu-box">
+      <h3>💡 الرسالة التربوية والتعليمية في كل حلقة (Educational & Family Values)</h3>
+      <div>
+        تتضمن كل حلقة من حلقات <b>«بيت أبو حمزة»</b> مشهداً تربوياً وتعليمياً دافئاً ومحبباً؛ حيث يتعلم الصغار والكبار من المواقف اليومية بأسلوب حنون وقريب للقلب، فإذا أخطأ أحد أفراد العائلة يبادر أبو حمزة أو أم حمزة أو آية أو جنى أو حمزة لتوضيح الصواب بلطف ومحبة دون قسوة.
+      </div>
+      <div style="margin-top:6px; color:#cbd5e1; font-size:0.84rem; direction:ltr; text-align:left;">
+        🌍 Every episode features a heartwarming, positive-parenting educational moment that teaches kids and families the right values with humor, kindness, and love.
+      </div>
+    </div>
+
+    <div class="meta-box">
+      <div><b>البايو الرسمي الموحّد (Official Bio):</b> «🏠 بيت أبو حمزة | Bayt Abu Hamza (@baytabuhamza) — مسلسل أنيميشن عائلي كوميدي تعليمي وتربوي هادف بتقنية 3D ✨ يوميات دافئة مع (أبو حمزة، أم حمزة، آية، جنى، حمزة، ورهف "رورو") نزرع فيها القيم الجميلة ونعلّم الصح بأسلوب محبّب لكل عيلة بالعالم 🌍❤️»</div>
+      <div style="margin-top:6px;"><b>معرّف قناة يوتيوب (Channel ID):</b> <span style="direction:ltr; display:inline-block; font-family:monospace;">UCqOaBMVJ3AkNnq25DylDBLQ</span></div>
+      <div style="margin-top:4px;"><b>البريد المربوط:</b> <span style="direction:ltr; display:inline-block; font-family:monospace; color:#38bdf8;">amjed.nawasra80@gmail.com (YouTube & Redz) | hajrpulse.official+family@gmail.com (IG)</span></div>
+    </div>
+
+    <div class="tags-box">
+      <div class="tags-title">
+        <span>🌐 الهاشتاقات العالمية للوصول لكل دول العالم (Global Reach Hashtags)</span>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('global-tags').innerText); this.innerText='تم النسخ ✓';">نسخ الهاشتاقات</button>
+      </div>
+      <div class="tags-text" id="global-tags">#بيت_أبو_حمزة #عائلة_أبو_حمزة #كرتون_تعليمي #قصص_عائلية_هادفة #تربية_إيجابية #كرتون_عائلي #أنيميشن_عربي #كوميديا_عائلية #تعليم_الأطفال #قيم_عائلية #الأردن #السعودية #الإمارات #قطر #الكويت #البحرين #عمان #مصر #فلسطين #سوريا #لبنان #العراق #المغرب #الجزائر #تونس #ليبيا #تركيا #ماليزيا #إندونيسيا #ألمانيا #بريطانيا #فرنسا #إسبانيا #أمريكا #كندا #أستراليا #BaytAbuHamza #FamilyAnimation #EducationalCartoon #3DAnimation #PurposefulContent #FamilyValues #PositiveParenting #ArabFamily #MuslimFamily #KidsLearning #GlobalFamily #USA #UK #Canada #Germany #France #Spain #Sweden #Turkey #Indonesia #Malaysia #Australia</div>
+    </div>
+    
+    <div class="links">
+      <a class="link-btn" href="https://www.youtube.com/@baytabuhamza" target="_blank" rel="noopener"><span class="l-plat">▶️ YouTube (القناة الرسمية)</span><span class="l-handle">@baytabuhamza</span></a>
+      <a class="link-btn" href="https://www.instagram.com/baytabuhamza/" target="_blank" rel="noopener"><span class="l-plat">📸 Instagram</span><span class="l-handle">@baytabuhamza</span></a>
+      <a class="link-btn" href="https://hajrpulse.github.io/baytabuhamza.html" target="_blank" rel="noopener"><span class="l-plat">📱 Redz App</span><span class="l-handle">@baytabuhamza</span></a>
+    </div>
+    <div class="nav-bottom">
+      <a href="index.html">🏠 الرئيسية</a>
+      <a href="dashboard.html">📊 لوحة التحكم الشاملة</a>
+      <a href="pulse.html">⚡ هجر بلس</a>
+      <a href="quran.html">🕋 هجر قرآن</a>
+      <a href="sunnah.html">📜 هجر سُنّة</a>
+      <a href="ai.html">🤖 هجر AI</a>
+      <a href="shifa.html">🌿 هجر شِفاء</a>
+      <a href="baytabuhamza.html">🏠 بيت أبو حمزة</a>
+    </div>
+  </div>
+</body>
+</html>

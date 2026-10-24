@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة تحكم شبكة هجر الإعلامية | HAJR Media Network Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070b14;
+      --bg-card: #0f172a;
+      --bg-card-hover: #131f38;
+      --bg-elevated: #1e293b;
+      --border: rgba(148, 163, 184, 0.16);
+      --gold: #d4af37;
+      --gold-light: #f3e5ab;
+      --cyan: #38bdf8;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --violet: #a855f7;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top right, #111c35 0%, #070b14 55%, #04070d 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.65;
+      padding-bottom: 60px;
+    }
+    a { color: var(--cyan); text-decoration: none; transition: 0.2s; }
+    a:hover { color: var(--gold-light); text-decoration: underline; }
+    .container { max-width: 1380px; margin: 0 auto; padding: 24px 20px; }
+    
+    /* Header */
+    .hero {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.88));
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 22px;
+      padding: 26px 28px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; right: 0; left: 0; height: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--emerald), var(--cyan), var(--violet));
+    }
+    .hero-title h1 {
+      font-size: 1.85rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #ffffff, var(--gold-light), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+    .badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .dot-pulse {
+      width: 8px; height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text);
+      transition: all 0.2s;
+      text-decoration: none !important;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--gold);
+      background: #26354d;
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #d4af37, #b48a1e);
+      color: #070b14;
+      border-color: #f3e5ab;
+    }
+    .btn-gold:hover {
+      background: linear-gradient(135deg, #e5c349, #c89b24);
+      color: #070b14;
+    }
+    .btn-emerald {
+      background: rgba(16, 185, 129, 0.16);
+      border-color: rgba(16, 185, 129, 0.45);
+      color: #34d399;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-label { color: var(--text-muted); font-size: 0.86rem; font-weight: 600; margin-bottom: 6px; }
+    .kpi-val { font-size: 2rem; font-weight: 900; line-height: 1.15; font-variant-numeric: tabular-nums; }
+    .kpi-sub { color: var(--text-muted); font-size: 0.78rem; margin-top: 6px; }
+
+    /* Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+      background: rgba(15, 23, 42, 0.75);
+      padding: 8px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+    .nav-tab {
+      padding: 10px 18px;
+      border-radius: 11px;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 0.92rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      transition: 0.2s;
+    }
+    .nav-tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+    .nav-tab.active {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.22), rgba(56, 189, 248, 0.14));
+      border-color: var(--gold);
+      color: var(--gold-light);
+    }
+
+    /* Filter Pills */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .filter-pill {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.83rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      transition: 0.18s;
+    }
+    .filter-pill.active, .filter-pill:hover {
+      border-color: var(--cyan);
+      color: var(--text);
+      background: rgba(56, 189, 248, 0.15);
+    }
+
+    /* Section Panels */
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+    }
+    .panel-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .panel-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Channel Cards Grid */
+    .channels-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 18px;
+    }
+    .channel-card {
+      background: rgba(30, 41, 59, 0.55);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      transition: 0.2s;
+    }
+    .channel-card:hover {
+      border-color: rgba(212, 175, 55, 0.45);
+      background: rgba(30, 41, 59, 0.8);
+    }
+    .channel-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .channel-name { font-size: 1.2rem; font-weight: 900; color: #fff; }
+    .channel-desc { font-size: 0.84rem; color: var(--text-muted); margin-top: 2px; }
+    .email-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(212, 175, 55, 0.13);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      color: var(--gold-light);
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-family: monospace;
+      direction: ltr;
+      cursor: pointer;
+    }
+    .email-chip:hover { background: rgba(212, 175, 55, 0.25); }
+
+    .platform-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .plat-row {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .plat-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .plat-badge {
+      padding: 3px 10px;
+      border-radius: 7px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .plat-youtube { background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239,68,68,0.4); }
+    .plat-instagram { background: rgba(236, 72, 153, 0.18); color: #f472b6; border: 1px solid rgba(236,72,153,0.4); }
+    .plat-threads { background: rgba(148, 163, 184, 0.2); color: #e2e8f0; border: 1px solid rgba(148,163,184,0.4); }
+    .plat-tiktok { background: rgba(45, 212, 191, 0.18); color: #2dd4bf; border: 1px solid rgba(45,212,191,0.4); }
+    .plat-telegram { background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid rgba(56,189,248,0.4); }
+    .plat-redz { background: rgba(168, 85, 247, 0.18); color: #c084fc; border: 1px solid rgba(168,85,247,0.4); }
+    .plat-facebook { background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59,130,246,0.4); }
+
+    .plat-metrics {
+      display: flex;
+      gap: 14px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .plat-metrics b { color: var(--text); font-weight: 800; }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; border-radius: 14px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; text-align: right; font-size: 0.88rem; }
+    th {
+      background: rgba(30, 41, 59, 0.9);
+      color: var(--gold-light);
+      font-weight: 800;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 11px 14px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      vertical-align: middle;
+    }
+    tr:hover td { background: rgba(255, 255, 255, 0.025); }
+    .ltr { direction: ltr; display: inline-block; font-family: monospace; }
+    .status-ok {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .status-warn {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .status-arch {
+      background: rgba(148, 163, 184, 0.15);
+      color: #94a3b8;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* Bar Chart */
+    .chart-row {
+      display: grid;
+      grid-template-columns: 180px 1fr 95px;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .chart-bar-bg {
+      height: 12px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .chart-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold), var(--emerald));
+    }
+
+    pre.notepad-preview {
+      background: #050811;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      color: #e2e8f0;
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 0.84rem;
+      max-height: 460px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      background: #10b981;
+      color: #04130d;
+      font-weight: 800;
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+      display: none;
+      z-index: 9999;
+    }
+
+    @media (max-width: 768px) {
+      .channels-grid { grid-template-columns: 1fr; }
+      .chart-row { grid-template-columns: 120px 1fr 70px; }
+      .hero-title h1 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Hero Header -->
+    <header class="hero">
+      <div class="hero-title">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <span class="badge-live"><span class="dot-pulse"></span> متزامن ومحدّث (بدون كلمات مرور)</span>
+          <span style="color:var(--gold); font-weight:700; font-size:0.85rem;">توقيت الرياض (UTC+3)</span>
+        </div>
+        <h1>لوحة تحكم شبكة هجر الإعلامية | HAJR Media Network</h1>
+        <div class="hero-subtitle">
+          <span>إدارة شاملة لكل القنوات والحسابات والإيميلات المربوطة وإحصاءات الأداء الحية</span>
+          <span>•</span>
+          <span id="last-updated-label">آخر تحديث: 24 أكتوبر 2026 — 9:25 م (بتوقيت الرياض)</span>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <button class="btn btn-gold" onclick="downloadNotepad()">📄 تحميل ملف النوتباد (HAJR_Accounts.txt)</button>
+        <button class="btn btn-emerald" onclick="refreshLiveStats()">🔄 تحديث الإحصاءات الحية</button>
+        <a class="btn" href="https://hajrpulse.github.io/" target="_blank" rel="noopener">🌐 البوابة الرئيسية (hajrpulse.github.io)</a>
+      </div>
+    </header>
+
+    <!-- Top KPIs -->
+    <section class="kpi-grid" id="kpi-container">
+      <div class="kpi-card">
+        <div class="kpi-label">إجمالي المشتركين والمتابعين</div>
+        <div class="kpi-val" style="color:var(--gold-light);" id="kpi-subs">7</div>
+        <div class="kpi-sub">5 في هجر قرآن • 1 هجر بلس • 1 هجر سُنّة</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">إجمالي مشاهدات يوتيوب الأخيرة</div>
+        <div class="kpi-val" style="color:var(--emerald);" id="kpi-views">619</div>
+        <div class="kpi-sub">تتصدرها سورة البقرة (1-5) العفاسي بـ 536 مشاهدة</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">إجمالي التفاعلات والإعجابات</div>
+        <div class="kpi-val" style="color:var(--cyan);" id="kpi-likes">59</div>
+        <div class="kpi-sub">59 إعجاب يوتيوب شورتس + 1 إنستغرام</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">المقاطع والمنشورات المنشورة</div>
+        <div class="kpi-val" style="color:var(--amber);" id="kpi-posts">6</div>
+        <div class="kpi-sub">2 شورتس هجر قرآن + 4 ريلز/ثريدز</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">المشاريع والقنوات المربوطة</div>
+        <div class="kpi-val" style="color:var(--violet);">4 مشاريع</div>
+        <div class="kpi-sub">21 حساب منصة + 11 إيميل Google موثق</div>
+      </div>
+    </section>
+
+    <!-- View Mode Switcher -->
+    <nav class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('tab-all', this)">📊 الشامل (الإحصاءات + دليل الحسابات والإيميلات)</button>
+      <button class="nav-tab" onclick="switchTab('tab-directory', this)">📧 دليل الحسابات والإيميلات المربوطة (جدول تفصيلي)</button>
+      <button class="nav-tab" onclick="switchTab('tab-notepad', this)">📝 ملف النوتباد (HAJR_Accounts.txt)</button>
+      <button class="nav-tab" onclick="switchTab('tab-pages', this)">🔗 صفحات القنوات وروابط Redz</button>
+    </nav>
+
+    <!-- SECTION 1: LIVE PERFORMANCE & CHANNELS -->
+    <div id="section-performance">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">📈 أداء القنوات والمنصات الحي (Live Channels & Platforms)</div>
+          <div class="filter-bar" id="channel-filters">
+            <button class="filter-pill active" onclick="filterChannels('ALL', this)">كل القنوات (6)</button>
+            <button class="filter-pill" onclick="filterChannels('Pulse', this)">⚡ HAJR Pulse | هجر بلس</button>
+            <button class="filter-pill" onclick="filterChannels('Quran', this)">🕋 HAJR Quran | هجر قرآن</button>
+            <button class="filter-pill" onclick="filterChannels('Sunnah', this)">📜 HAJR Sunnah | هجر سُنّة</button>
+            <button class="filter-pill" onclick="filterChannels('AI', this)">🤖 HAJR AI | هجر للذكاء الاصطناعي</button>
+            <button class="filter-pill" onclick="filterChannels('Shifa', this)">🌿 HAJR Shifa | هجر شِفاء</button>
+            <button class="filter-pill" onclick="filterChannels('BaytAbuHamza', this)">🏠 بيت أبو حمزة</button>
+          </div>
+        </div>
+
+        <!-- Visual Comparison Chart -->
+        <div style="margin-bottom:24px; background:rgba(15,23,42,0.65); padding:16px 18px; border-radius:14px; border:1px solid var(--border);">
+          <div style="font-weight:800; font-size:0.92rem; color:var(--gold-light); margin-bottom:12px;">مقارنة المشاهدات والمشتركين حسب القناة (YouTube & Social)</div>
+          <div class="chart-row">
+            <div style="font-weight:700; font-size:0.86rem;">🕋 هجر قرآن (مشاهدات)</div>
+            <div class="chart-bar-bg"><div class="chart-bar-fill" style="width:100%;"></div></div>
+            <div style="text-align:left; font-weight:800; color:var(--emerald);">626 مشاهدة</div>
+          </div>
+          <div class="chart-row">
+            <div style="font-weight:700; font-size:0.86rem;">🕋 هجر قرآن (إعجابات)</div>
+            <div class="chart-bar-bg"><div class="chart-bar-fill" style="width:45%; background:linear-gradient(90deg, var(--cyan), var(--emerald));"></div></div>
+            <div style="text-align:left; font-weight:800; color:var(--cyan);">59 إعجاب</div>
+          </div>
+          <div class="chart-row">
+            <div style="font-weight:700; font-size:0.86rem;">🕋 هجر قرآن (مشتركون)</div>
+            <div class="chart-bar-bg"><div class="chart-bar-fill" style="width:28%; background:var(--gold);"></div></div>
+            <div style="text-align:left; font-weight:800; color:var(--gold-light);">5 مشتركين</div>
+          </div>
+          <div class="chart-row">
+            <div style="font-weight:700; font-size:0.86rem;">⚡ هجر بلس (مشتركون)</div>
+            <div class="chart-bar-bg"><div class="chart-bar-fill" style="width:10%; background:var(--cyan);"></div></div>
+            <div style="text-align:left; font-weight:800; color:var(--text);">1 مشترك</div>
+          </div>
+          <div class="chart-row" style="margin-bottom:0;">
+            <div style="font-weight:700; font-size:0.86rem;">📜 هجر سُنّة (مشتركون)</div>
+            <div class="chart-bar-bg"><div class="chart-bar-fill" style="width:10%; background:var(--violet);"></div></div>
+            <div style="text-align:left; font-weight:800; color:var(--text);">1 مشترك</div>
+          </div>
+        </div>
+
+        <!-- Channels Cards -->
+        <div class="channels-grid" id="channels-cards-container"></div>
+      </div>
+
+      <!-- Recent Published Videos/Posts Table -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">🎬 أحدث الفيديوهات والمنشورات المنشورة (Live Posts Feed)</div>
+          <span style="font-size:0.83rem; color:var(--text-muted);">جميع التوقيتات معروضة بتوقيت الرياض (UTC+3)</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>القناة</th>
+                <th>المنصة</th>
+                <th>عنوان المقطع / المنشور</th>
+                <th>المشاهدات</th>
+                <th>الإعجابات</th>
+                <th>تاريخ النشر (بتوقيت الرياض)</th>
+                <th>الرابط</th>
+              </tr>
+            </thead>
+            <tbody id="recent-posts-tbody">
+              <tr>
+                <td><b>📜 HAJR Sunnah | هجر سُنّة</b></td>
+                <td><span class="plat-badge plat-youtube">YouTube Shorts</span></td>
+                <td>حديث «إنما الأعمال بالنيات» (متفق عليه — البخاري ومسلم) #Shorts</td>
+                <td><b style="color:var(--emerald);">جديد</b></td>
+                <td><b style="color:var(--gold-light);">—</b></td>
+                <td>24 أكتوبر 2026 — 9:15 م (عمّان/الرياض)</td>
+                <td><a href="https://www.youtube.com/shorts/oIp0v9V1x9Y" target="_blank" rel="noopener">فتح الفيديو ↗</a></td>
+              </tr>
+              <tr>
+                <td><b>🕋 HAJR Quran | هجر قرآن</b></td>
+                <td><span class="plat-badge plat-youtube">YouTube Shorts</span></td>
+                <td>سورة البقرة (6-9) بصوت أحمد بن علي العجمي #Shorts</td>
+                <td><b style="color:var(--emerald);">83</b></td>
+                <td><b style="color:var(--gold-light);">16</b></td>
+                <td>24 أكتوبر 2026 — 6:49 م (الرياض)</td>
+                <td><a href="https://youtube.com/shorts/42ixawDwY8Q" target="_blank" rel="noopener">فتح الفيديو ↗</a></td>
+              </tr>
+              <tr>
+                <td><b>🕋 HAJR Quran | هجر قرآن</b></td>
+                <td><span class="plat-badge plat-youtube">YouTube Shorts</span></td>
+                <td>سورة البقرة (1-5) بصوت مشاري راشد العفاسي #Shorts</td>
+                <td><b style="color:var(--emerald);">536</b></td>
+                <td><b style="color:var(--gold-light);">42</b></td>
+                <td>23 أكتوبر 2026 — 7:05 م (الرياض)</td>
+                <td><a href="https://youtube.com/shorts/rkrExUj7xLI" target="_blank" rel="noopener">فتح الفيديو ↗</a></td>
+              </tr>
+              <tr>
+                <td><b>📜 HAJR Sunnah | هجر سُنّة</b></td>
+                <td><span class="plat-badge plat-instagram">Instagram Reel</span></td>
+                <td>مقطع منشور على إنستغرام (@hajrsunnah)</td>
+                <td>—</td>
+                <td>0</td>
+                <td>23 أكتوبر 2026 — 11:16 ص (الرياض)</td>
+                <td><a href="https://www.instagram.com/reel/De4yFUzPpXF/" target="_blank" rel="noopener">فتح الريل ↗</a></td>
+              </tr>
+              <tr>
+                <td><b>📜 HAJR Sunnah | هجر سُنّة</b></td>
+                <td><span class="plat-badge plat-instagram">Instagram Reel</span></td>
+                <td>مقطع منشور على إنستغرام (@hajrsunnah)</td>
+                <td>—</td>
+                <td>1</td>
+                <td>23 أكتوبر 2026 — 10:04 ص (الرياض)</td>
+                <td><a href="https://www.instagram.com/reel/De4yFUzPpXF/" target="_blank" rel="noopener">فتح الريل ↗</a></td>
+              </tr>
+              <tr>
+                <td><b>📜 HAJR Sunnah | هجر سُنّة</b></td>
+                <td><span class="plat-badge plat-threads">Threads</span></td>
+                <td>منشور أرشيفي سابق على ثريدز (@hajrsunnah)</td>
+                <td>—</td>
+                <td>—</td>
+                <td>23 أكتوبر 2026 — 11:18 ص (الرياض)</td>
+                <td><a href="https://www.threads.com/@hajrsunnah/post/De4yVZBDgZ0" target="_blank" rel="noopener">فتح المنشور ↗</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: COMPLETE ACCOUNT & LINKED EMAIL DIRECTORY -->
+    <div id="section-directory">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">📧 دليل كافة القنوات والمنصات والإيميل المربوط بكل حساب (بدون أي باسوردات)</div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn btn-gold" onclick="copyAllAccounts()">📋 نسخ الدليل الكامل</button>
+            <button class="btn" onclick="downloadNotepad()">💾 تنزيل HAJR_Accounts.txt</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>المشروع / القناة</th>
+                <th>المنصة</th>
+                <th>المعرّف (Handle)</th>
+                <th>Channel ID / معرّف تقني</th>
+                <th>الإيميل المربوط بالحساب (انقر للنسخ)</th>
+                <th>الحالة</th>
+                <th>الرابط المباشر</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 1. HAJR Pulse -->
+              <tr>
+                <td rowspan="8"><b>⚡ 1. HAJR Pulse | هجر بلس</b><br><span style="font-size:0.78rem; color:var(--text-muted);">الأسواق، المال، الذكاء الاصطناعي، والتقنية<br>مجلد: <span class="ltr">C:\hajr-pulse-auto</span></span></td>
+                <td><span class="plat-badge plat-youtube">YouTube (الرسمية)</span></td>
+                <td><span class="ltr">@HAJRPulse</span></td>
+                <td><span class="ltr">UCX_wN2ElzJe_Y_xCi7hxo-Q</span></td>
+                <td><span class="email-chip" onclick="copyText('s05553073@gmail.com')">s05553073@gmail.com</span></td>
+                <td><span class="status-ok">مفعّلة رسمياً (محوّلة من سهم)</span></td>
+                <td><a href="https://www.youtube.com/@HAJRPulse" target="_blank" rel="noopener">youtube.com/@HAJRPulse ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-youtube">YouTube (السابقة)</span></td>
+                <td><span class="ltr">@HAJRPulseOfficial</span></td>
+                <td><span class="ltr">UCbEfmXp9CbLqIj_FMH8w26A</span></td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse.official@gmail.com')">hajrpulse.official@gmail.com</span></td>
+                <td><span class="status-warn">معلّقة وبانتظار الطعن</span></td>
+                <td><a href="https://www.youtube.com/channel/UCbEfmXp9CbLqIj_FMH8w26A" target="_blank" rel="noopener">رابط القناة ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-instagram">Instagram</span></td>
+                <td><span class="ltr">@hajrpulse</span></td>
+                <td>Meta App: <span class="ltr">1586872452689048</span></td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse.official@gmail.com')">hajrpulse.official@gmail.com</span></td>
+                <td><span class="status-ok">نشط ومربوط بـ Meta API</span></td>
+                <td><a href="https://www.instagram.com/hajrpulse/" target="_blank" rel="noopener">instagram.com/hajrpulse ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-threads">Threads</span></td>
+                <td><span class="ltr">@hajrpulse</span></td>
+                <td>Threads Graph API</td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse.official@gmail.com')">hajrpulse.official@gmail.com</span></td>
+                <td><span class="status-ok">نشط ومربوط آلياً</span></td>
+                <td><a href="https://www.threads.net/@hajrpulse" target="_blank" rel="noopener">threads.net/@hajrpulse ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-tiktok">TikTok</span></td>
+                <td><span class="ltr">@hajrpulse</span></td>
+                <td>Google Sign-In</td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse.official@gmail.com')">hajrpulse.official@gmail.com</span></td>
+                <td><span class="status-ok">فعّال</span></td>
+                <td><a href="https://www.tiktok.com/@hajrpulse" target="_blank" rel="noopener">tiktok.com/@hajrpulse ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-facebook">Facebook</span></td>
+                <td>حساب هجر بلس</td>
+                <td>تذكير التفعيل: 26 أكتوبر</td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse.official@gmail.com')">hajrpulse.official@gmail.com</span></td>
+                <td><span class="status-warn">فترة إحماء حتى 26 أكتوبر</span></td>
+                <td><a href="https://hajrpulse.github.io/pulse.html" target="_blank" rel="noopener">صفحة القناة ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-telegram">Telegram Bot</span></td>
+                <td><span class="ltr">@VibeMediaSignals_bot</span></td>
+                <td>HAJR Pulse | هجر بلس</td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse.official@gmail.com')">hajrpulse.official@gmail.com</span></td>
+                <td><span class="status-ok">نشط 24/7</span></td>
+                <td><a href="https://t.me/VibeMediaSignals_bot" target="_blank" rel="noopener">t.me/VibeMediaSignals_bot ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-redz">Redz + Web</span></td>
+                <td><span class="ltr">@hajrpulse</span></td>
+                <td><span class="ltr">com.homyt.thex</span></td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse.official@gmail.com')">hajrpulse.official@gmail.com</span></td>
+                <td><span class="status-ok">صفحة مخصصة جاهزة</span></td>
+                <td><a href="https://hajrpulse.github.io/pulse.html" target="_blank" rel="noopener">hajrpulse.github.io/pulse.html ↗</a></td>
+              </tr>
+
+              <!-- 2. HAJR Quran -->
+              <tr>
+                <td rowspan="5"><b>🕋 2. HAJR Quran | هجر قرآن</b><br><span style="font-size:0.78rem; color:var(--text-muted);">تلاوات قرآنية خاشعة يومية<br>مجلد: <span class="ltr">C:\hajr-quran-auto</span></span></td>
+                <td><span class="plat-badge plat-youtube">YouTube (الرسمية)</span></td>
+                <td><span class="ltr">@HAJRQuran</span></td>
+                <td><span class="ltr">UCgzhXCxn3RtZI7IsMb2NL8A</span></td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse@gmail.com')">hajrpulse@gmail.com</span></td>
+                <td><span class="status-ok">نشطة وتنشر تلقائياً (5 مشتركين، 626 مشاهدة)</span></td>
+                <td><a href="https://www.youtube.com/@HAJRQuran" target="_blank" rel="noopener">youtube.com/@HAJRQuran ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-instagram">Instagram</span></td>
+                <td><span class="ltr">@hajrquran</span></td>
+                <td>حساب احترافي</td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse.official+quran@gmail.com')">hajrpulse.official+quran@gmail.com</span></td>
+                <td><span class="status-ok">نشط ومربوط آلياً</span></td>
+                <td><a href="https://www.instagram.com/hajrquran/" target="_blank" rel="noopener">instagram.com/hajrquran ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-threads">Threads</span></td>
+                <td><span class="ltr">@hajrquran</span></td>
+                <td>Threads Graph API</td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse.official+quran@gmail.com')">hajrpulse.official+quran@gmail.com</span></td>
+                <td><span class="status-ok">نشط ومربوط آلياً</span></td>
+                <td><a href="https://www.threads.net/@hajrquran" target="_blank" rel="noopener">threads.net/@hajrquran ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-telegram">Telegram Bot</span></td>
+                <td><span class="ltr">@hajr_quran_bot</span></td>
+                <td>HAJR Quran | هجر قرآن</td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse.official+quran@gmail.com')">hajrpulse.official+quran@gmail.com</span></td>
+                <td><span class="status-ok">نشط 24/7</span></td>
+                <td><a href="https://t.me/hajr_quran_bot" target="_blank" rel="noopener">t.me/hajr_quran_bot ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-redz">Redz + Web</span></td>
+                <td><span class="ltr">@hajrquran</span></td>
+                <td><span class="ltr">com.homyt.thex</span></td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse.official+quran@gmail.com')">hajrpulse.official+quran@gmail.com</span></td>
+                <td><span class="status-ok">صفحة مخصصة جاهزة</span></td>
+                <td><a href="https://hajrpulse.github.io/quran.html" target="_blank" rel="noopener">hajrpulse.github.io/quran.html ↗</a></td>
+              </tr>
+
+              <!-- 3. HAJR Sunnah -->
+              <tr>
+                <td rowspan="5"><b>📜 3. HAJR Sunnah | هجر سُنّة</b><br><span style="font-size:0.78rem; color:var(--text-muted);">الأحاديث الصحيحة (البخاري ومسلم) بـ 7 لغات<br>مجلد: <span class="ltr">C:\hajr-sunnah-auto</span></span></td>
+                <td><span class="plat-badge plat-youtube">YouTube (الرسمية)</span></td>
+                <td><span class="ltr">@HAJRSunnah</span></td>
+                <td><span class="ltr">UCxJf4LcZR_MG6Qn4zhyASsQ</span></td>
+                <td><span class="email-chip" onclick="copyText('j61076776@gmail.com')">j61076776@gmail.com</span></td>
+                <td><span class="status-ok">مفعّلة وجاهزة (1 مشترك)</span></td>
+                <td><a href="https://www.youtube.com/@HAJRSunnah" target="_blank" rel="noopener">youtube.com/@HAJRSunnah ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-instagram">Instagram</span></td>
+                <td><span class="ltr">@hajrsunnah</span></td>
+                <td>حساب احترافي رسمي</td>
+                <td><span class="email-chip" onclick="copyText('j61076776@gmail.com')">j61076776@gmail.com</span></td>
+                <td><span class="status-ok">نشط ومؤكد الإيميل الجديد</span></td>
+                <td><a href="https://www.instagram.com/hajrsunnah/" target="_blank" rel="noopener">instagram.com/hajrsunnah ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-threads">Threads</span></td>
+                <td><span class="ltr">@hajrsunnah</span></td>
+                <td>حساب احترافي رسمي</td>
+                <td><span class="email-chip" onclick="copyText('j61076776@gmail.com')">j61076776@gmail.com</span></td>
+                <td><span class="status-ok">نشط ومربوط آلياً</span></td>
+                <td><a href="https://www.threads.net/@hajrsunnah" target="_blank" rel="noopener">threads.net/@hajrsunnah ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-telegram">Telegram Bot</span></td>
+                <td><span class="ltr">@HAJRNewsAlertsBot</span></td>
+                <td>HAJR Sunnah | هجر سُنّة</td>
+                <td><span class="email-chip" onclick="copyText('j61076776@gmail.com')">j61076776@gmail.com</span></td>
+                <td><span class="status-ok">نشط 24/7</span></td>
+                <td><a href="https://t.me/HAJRNewsAlertsBot" target="_blank" rel="noopener">t.me/HAJRNewsAlertsBot ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-redz">Redz + Web</span></td>
+                <td><span class="ltr">@hajrsunnah</span></td>
+                <td><span class="ltr">com.homyt.thex</span></td>
+                <td><span class="email-chip" onclick="copyText('j61076776@gmail.com')">j61076776@gmail.com</span></td>
+                <td><span class="status-ok">صفحة مخصصة جاهزة</span></td>
+                <td><a href="https://hajrpulse.github.io/sunnah.html" target="_blank" rel="noopener">hajrpulse.github.io/sunnah.html ↗</a></td>
+              </tr>
+
+              <!-- 4. HAJR AI -->
+              <tr>
+                <td rowspan="5"><b>🤖 4. HAJR AI | هجر للذكاء الاصطناعي</b><br><span style="font-size:0.78rem; color:var(--text-muted);">أدوات الذكاء الاصطناعي وأتمتة الأعمال (5 لغات — 100 شورت)<br>مجلد: <span class="ltr">C:\hajr-ai-auto</span></span></td>
+                <td><span class="plat-badge plat-youtube">YouTube (الرسمية)</span></td>
+                <td><span class="ltr">@HAJRAI</span></td>
+                <td>20 أداة × 5 لغات (AR, EN, FR, ES, TR)</td>
+                <td><span class="email-chip" onclick="copyText('saed45449@gmail.com')">saed45449@gmail.com</span></td>
+                <td><span class="status-ok">معتمدة وجاهزة (حماية تسخين 14 يوماً)</span></td>
+                <td><a href="https://www.youtube.com/@HAJRAI" target="_blank" rel="noopener">youtube.com/@HAJRAI ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-instagram">Instagram</span></td>
+                <td><span class="ltr">@hajrai</span></td>
+                <td>حساب احترافي رسمي</td>
+                <td><span class="email-chip" onclick="copyText('saed45449@gmail.com')">saed45449@gmail.com</span></td>
+                <td><span class="status-ok">معتمد (Frame 0 غلاف كامل)</span></td>
+                <td><a href="https://www.instagram.com/hajrai/" target="_blank" rel="noopener">instagram.com/hajrai ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-threads">Threads</span></td>
+                <td><span class="ltr">@hajrai</span></td>
+                <td>حساب احترافي رسمي</td>
+                <td><span class="email-chip" onclick="copyText('saed45449@gmail.com')">saed45449@gmail.com</span></td>
+                <td><span class="status-ok">معتمد</span></td>
+                <td><a href="https://www.threads.net/@hajrai" target="_blank" rel="noopener">threads.net/@hajrai ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-telegram">Telegram Bot</span></td>
+                <td><span class="ltr">@VibeMediaSignals_bot</span></td>
+                <td>HAJR AI & Pulse Signals</td>
+                <td><span class="email-chip" onclick="copyText('saed45449@gmail.com')">saed45449@gmail.com</span></td>
+                <td><span class="status-ok">نشط 24/7</span></td>
+                <td><a href="https://t.me/VibeMediaSignals_bot" target="_blank" rel="noopener">t.me/VibeMediaSignals_bot ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-redz">Redz + Web</span></td>
+                <td><span class="ltr">@hajrai</span></td>
+                <td><span class="ltr">com.homyt.thex</span></td>
+                <td><span class="email-chip" onclick="copyText('saed45449@gmail.com')">saed45449@gmail.com</span></td>
+                <td><span class="status-ok">صفحة مخصصة منشورة</span></td>
+                <td><a href="https://hajrpulse.github.io/ai.html" target="_blank" rel="noopener">hajrpulse.github.io/ai.html ↗</a></td>
+              </tr>
+
+              <!-- 5. HAJR Shifa -->
+              <tr>
+                <td rowspan="5"><b>🌿 5. HAJR Shifa | هجر شِفاء</b><br><span style="font-size:0.78rem; color:var(--text-muted);">الطب النبوي الصحيح (١٠٠٪ قرآن وبخاري ومسلم) + أبحاث PubMed<br>مجلد: <span class="ltr">C:\hajr-shifa-auto</span></span></td>
+                <td><span class="plat-badge plat-youtube">YouTube (الرسمية)</span></td>
+                <td><span class="ltr">@HAJRShifa</span></td>
+                <td>20 موضوعاً × 5 لغات + PubMed PMIDs</td>
+                <td><span class="email-chip" onclick="copyText('s10223936@gmail.com')">s10223936@gmail.com</span></td>
+                <td><span class="status-ok">معتمدة وجاهزة (حماية تسخين 14 يوماً)</span></td>
+                <td><a href="https://www.youtube.com/@HAJRShifa" target="_blank" rel="noopener">youtube.com/@HAJRShifa ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-instagram">Instagram</span></td>
+                <td><span class="ltr">@hajrshifa</span></td>
+                <td>حساب احترافي رسمي</td>
+                <td><span class="email-chip" onclick="copyText('s10223936@gmail.com')">s10223936@gmail.com</span></td>
+                <td><span class="status-ok">معتمد (Frame 0 غلاف كامل)</span></td>
+                <td><a href="https://www.instagram.com/hajrshifa/" target="_blank" rel="noopener">instagram.com/hajrshifa ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-threads">Threads</span></td>
+                <td><span class="ltr">@hajrshifa</span></td>
+                <td>حساب احترافي رسمي</td>
+                <td><span class="email-chip" onclick="copyText('s10223936@gmail.com')">s10223936@gmail.com</span></td>
+                <td><span class="status-ok">معتمد</span></td>
+                <td><a href="https://www.threads.net/@hajrshifa" target="_blank" rel="noopener">threads.net/@hajrshifa ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-telegram">Telegram Bot</span></td>
+                <td><span class="ltr">@VibeMediaSignals_bot</span></td>
+                <td>HAJR Shifa Health Guide</td>
+                <td><span class="email-chip" onclick="copyText('s10223936@gmail.com')">s10223936@gmail.com</span></td>
+                <td><span class="status-ok">نشط 24/7</span></td>
+                <td><a href="https://t.me/VibeMediaSignals_bot" target="_blank" rel="noopener">t.me/VibeMediaSignals_bot ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-redz">Redz + Web</span></td>
+                <td><span class="ltr">@hajrshifa</span></td>
+                <td><span class="ltr">com.homyt.thex</span></td>
+                <td><span class="email-chip" onclick="copyText('s10223936@gmail.com')">s10223936@gmail.com</span></td>
+                <td><span class="status-ok">صفحة مخصصة منشورة</span></td>
+                <td><a href="https://hajrpulse.github.io/shifa.html" target="_blank" rel="noopener">hajrpulse.github.io/shifa.html ↗</a></td>
+              </tr>
+
+              <!-- 6. Bayt Abu Hamza -->
+              <tr>
+                <td rowspan="3"><b>🏠 6. بيت أبو حمزة | Bayt Abu Hamza</b><br><span style="font-size:0.78rem; color:var(--text-muted);">مسلسل كرتوني عائلي كوميدي تعليمي وتربوي هادف (3D) + هاشتاقات عالمية</span></td>
+                <td><span class="plat-badge plat-youtube">YouTube (الرسمية)</span></td>
+                <td><span class="ltr">@baytabuhamza</span></td>
+                <td><span class="ltr">UCqOaBMVJ3AkNnq25DylDBLQ</span></td>
+                <td><span class="email-chip" onclick="copyText('amjed.nawasra80@gmail.com')">amjed.nawasra80@gmail.com</span></td>
+                <td><span class="status-ok">مفعّلة وجاهزة للنشر اليدوي</span></td>
+                <td><a href="https://www.youtube.com/@baytabuhamza" target="_blank" rel="noopener">youtube.com/@baytabuhamza ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-instagram">Instagram</span></td>
+                <td><span class="ltr">@baytabuhamza</span></td>
+                <td>حساب المسلسل العائلي</td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse.official+family@gmail.com')">hajrpulse.official+family@gmail.com</span></td>
+                <td><span class="status-ok">نشط (نشر يدوي)</span></td>
+                <td><a href="https://www.instagram.com/baytabuhamza/" target="_blank" rel="noopener">instagram.com/baytabuhamza ↗</a></td>
+              </tr>
+              <tr>
+                <td><span class="plat-badge plat-redz">Redz + Web</span></td>
+                <td><span class="ltr">@baytabuhamza</span></td>
+                <td><span class="ltr">com.homyt.thex</span></td>
+                <td><span class="email-chip" onclick="copyText('amjed.nawasra80@gmail.com')">amjed.nawasra80@gmail.com</span></td>
+                <td><span class="status-ok">صفحة مخصصة جاهزة</span></td>
+                <td><a href="https://hajrpulse.github.io/baytabuhamza.html" target="_blank" rel="noopener">hajrpulse.github.io/baytabuhamza.html ↗</a></td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 11 Google Accounts & Technical Accounts Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">🔐 قائمة إيميلات Google الـ 11 وحسابات الإدارة التقنية</div>
+          <span style="font-size:0.83rem; color:var(--text-muted);">اضغط على أي إيميل لنسخه فوراً</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>البريد الإلكتروني (Email)</th>
+                <th>الاسم على الحساب</th>
+                <th>القناة / المنصات المربوطة به</th>
+                <th>الحالة والملاحظات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><span class="email-chip" onclick="copyText('s05553073@gmail.com')">s05553073@gmail.com</span></td>
+                <td>HAJR Pulse Official</td>
+                <td>يوتيوب <b>@HAJRPulse</b> (<span class="ltr">UCX_wN2ElzJe_Y_xCi7hxo-Q</span>)</td>
+                <td><span class="status-ok">قناة هجر بلس الرسمية (محوّلة من سهم)</span></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse@gmail.com')">hajrpulse@gmail.com</span></td>
+                <td>HAJR Quran</td>
+                <td>يوتيوب <b>@HAJRQuran</b> (<span class="ltr">UCgzhXCxn3RtZI7IsMb2NL8A</span>)</td>
+                <td><span class="status-ok">قناة هجر قرآن الرسمية (محوّلة من هجر بلس القديمة)</span></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><span class="email-chip" onclick="copyText('j61076776@gmail.com')">j61076776@gmail.com</span></td>
+                <td>HAJR Sunnah</td>
+                <td>يوتيوب <b>@HAJRSunnah</b> + إنستغرام وثريدز وريدز <b>@hajrsunnah</b></td>
+                <td><span class="status-ok">الحساب الموحد لمشروع هجر سُنّة بالكامل</span></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><span class="email-chip" onclick="copyText('amjed.nawasra80@gmail.com')">amjed.nawasra80@gmail.com</span></td>
+                <td>بيت أبو حمزة</td>
+                <td>يوتيوب وريدز <b>@baytabuhamza</b> (<span class="ltr">UCqOaBMVJ3AkNnq25DylDBLQ</span>)</td>
+                <td><span class="status-ok">قناة مسلسل بيت أبو حمزة الكرتوني</span></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><span class="email-chip" onclick="copyText('hajrpulse.official@gmail.com')">hajrpulse.official@gmail.com</span></td>
+                <td>HAJR Media Official</td>
+                <td>إنستغرام/ثريدز/تيك توك/فيسبوك/ريدز <b>@hajrpulse</b> + GitHub <b>hajrpulse</b> + Meta App</td>
+                <td><span class="status-ok">الإيميل الإداري الرئيسي لمنصات التواصل وGitHub</span></td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><span class="email-chip" onclick="copyText('Amjadnawasra80@gmail.com')">Amjadnawasra80@gmail.com</span></td>
+                <td>Amjed Nawasra (الشخصي)</td>
+                <td>YouTube Premium الشخصي (<span class="ltr">@amjednawasra1179</span>)</td>
+                <td><span class="status-arch">معزول تماماً — شخصي فقط ولا يُلمس</span></td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><span class="email-chip" onclick="copyText('saed45449@gmail.com')">saed45449@gmail.com</span></td>
+                <td>HAJR AI | هجر للذكاء الاصطناعي</td>
+                <td>يوتيوب وإنستغرام وثريدز وريدز <b>@HAJRAI</b> (<span class="ltr">C:\hajr-ai-auto</span>)</td>
+                <td><span class="status-ok">مربوط رسمياً بقناة هجر للذكاء الاصطناعي (HAJR AI)</span></td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><span class="email-chip" onclick="copyText('s10223936@gmail.com')">s10223936@gmail.com</span></td>
+                <td>HAJR Shifa | هجر شِفاء</td>
+                <td>يوتيوب وإنستغرام وثريدز وريدز <b>@HAJRShifa</b> (<span class="ltr">C:\hajr-shifa-auto</span>)</td>
+                <td><span class="status-ok">مربوط رسمياً بقناة هجر شِفاء للطب النبوي والعلم الحديث</span></td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td><span class="email-chip" onclick="copyText('rahaf119980@gmail.com')">rahaf119980@gmail.com</span></td>
+                <td>رهف امجد</td>
+                <td>بدون قناة يوتيوب حالياً</td>
+                <td><span class="status-ok">حساب Google احتياطي جاهز</span></td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td><span class="email-chip" onclick="copyText('g02457817@gmail.com')">g02457817@gmail.com</span></td>
+                <td>Jana Amjed</td>
+                <td>بدون قناة يوتيوب حالياً</td>
+                <td><span class="status-ok">حساب Google احتياطي جاهز</span></td>
+              </tr>
+              <tr>
+                <td>11</td>
+                <td><span class="email-chip" onclick="copyText('m95770720@gmail.com')">m95770720@gmail.com</span></td>
+                <td>Mohammad Ahmad</td>
+                <td>بدون قناة يوتيوب حالياً</td>
+                <td><span class="status-ok">حساب Google احتياطي جاهز</span></td>
+              </tr>
+              <tr>
+                <td>12</td>
+                <td><span class="email-chip" onclick="copyText('nawasraamjed@gmail.com')">nawasraamjed@gmail.com</span></td>
+                <td>Amjed Nawasra</td>
+                <td>بدون قناة يوتيوب حالياً</td>
+                <td><span class="status-ok">حساب Google احتياطي جاهز</span></td>
+              </tr>
+              <tr>
+                <td>13</td>
+                <td><span class="email-chip" onclick="copyText('a42984293@gmail.com')">a42984293@gmail.com</span></td>
+                <td>أبو حمزة</td>
+                <td>بدون قناة يوتيوب حالياً</td>
+                <td><span class="status-ok">حساب Google احتياطي جاهز</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: NOTEPAD PREVIEW & DOWNLOAD -->
+    <div id="section-notepad">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">📝 محتوى ملف النوتباد الموحد (HAJR_Accounts.txt)</div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-gold" onclick="downloadNotepad()">📥 تنزيل HAJR_Accounts.txt على الجهاز</button>
+            <button class="btn" onclick="copyAllAccounts()">📋 نسخ النص بالكامل</button>
+          </div>
+        </div>
+        <pre class="notepad-preview" id="notepad-content">================================================================================
+       دليل حسابات وقنوات شبكة هجر الإعلامية (HAJR Media Network)
+         جميع القنوات الست والمنصات والإيميلات المربوطة بكل حساب
+            آخر تحديث: السبت 24 أكتوبر 2026 (بتوقيت عمّان/الرياض UTC+3)
+       (ملاحظة أمنية: هذا الملف خالٍ تماماً من أي كلمات مرور أو مفاتيح سرية)
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1) مشروع: هجر بلس | HAJR Pulse
+   المجال: الأسواق، المال، الذكاء الاصطناعي، والتقنية
+   مجلد التشغيل الآلي على السيرفر: C:\hajr-pulse-auto
+   الصفحة المخصصة على الويب: https://hajrpulse.github.io/pulse.html
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• يوتيوب (القناة الرسمية المفعّلة حالياً):
+  - اسم القناة: HAJR Pulse Official
+  - المعرّف (Handle): @HAJRPulse
+  - معرّف القناة (Channel ID): UCX_wN2ElzJe_Y_xCi7hxo-Q
+  - الرابط المباشر: https://www.youtube.com/@HAJRPulse
+  - الإيميل المربوط: s05553073@gmail.com
+  - الحالة: نشطة ومفعّلة بالكامل (البلد: السعودية | غير مخصصة للأطفال | إشعار الأهلية للربح مفعّل)
+
+• يوتيوب (القناة الاحتياطية السابقة):
+  - اسم القناة: HAJR Pulse
+  - المعرّف (Handle): @HAJRPulseOfficial
+  - معرّف القناة (Channel ID): UCbEfmXp9CbLqIj_FMH8w26A
+  - الرابط: https://www.youtube.com/channel/UCbEfmXp9CbLqIj_FMH8w26A
+  - الإيميل المربوط: hajrpulse.official@gmail.com
+  - الحالة: معلّقة حالياً وبانتظار نتيجة الطعن
+
+• إنستغرام (Instagram):
+  - المعرّف (Handle): @hajrpulse
+  - الرابط: https://www.instagram.com/hajrpulse/
+  - الإيميل المربوط: hajrpulse.official@gmail.com
+  - الربط التقني: حساب احترافي مربوط بتطبيق Meta App ID: 1586872452689048
+  - إيميل مطور Meta الإضافي: amjad.nawasra@hotmail.com
+
+• ثريدز (Threads):
+  - المعرّف (Handle): @hajrpulse
+  - الرابط: https://www.threads.net/@hajrpulse
+  - الإيميل المربوط: hajrpulse.official@gmail.com
+
+• تيك توك (TikTok):
+  - المعرّف (Handle): @hajrpulse
+  - الرابط: https://www.tiktok.com/@hajrpulse
+  - الإيميل المربوط: hajrpulse.official@gmail.com (دخول عبر Google Sign-In)
+
+• فيسبوك (Facebook):
+  - الحساب الشخصي/الإداري المربوط: hajrpulse.official@gmail.com
+  - الحالة: فترة إحماء الحساب (تذكير إنشاء الصفحة الرسمية مجدول يوم 26 أكتوبر 2026)
+
+• بوت تيليجرام (Telegram Bot):
+  - اسم البوت: HAJR Pulse | هجر بلس
+  - المعرّف (Username): @VibeMediaSignals_bot
+  - الرابط: https://t.me/VibeMediaSignals_bot
+  - الإيميل الإداري المربوط: hajrpulse.official@gmail.com
+
+• تطبيق ريدز (Redz - com.homyt.thex):
+  - المعرّف المقترح/المعتمد: @hajrpulse
+  - الإيميل المربوط: hajrpulse.official@gmail.com
+  - صفحة القناة المخصصة: https://hajrpulse.github.io/pulse.html
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2) مشروع: هجر قرآن | HAJR Quran
+   المجال: تلاوات قرآنية خاشعة يومية (Shorts & Reels & Long-Form)
+   مجلد التشغيل الآلي على السيرفر: C:\hajr-quran-auto
+   الصفحة المخصصة على الويب: https://hajrpulse.github.io/quran.html
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• يوتيوب (القناة الرسمية المفعّلة حالياً وتنشر آلياً):
+  - اسم القناة: HAJR Quran
+  - المعرّف (Handle): @HAJRQuran
+  - معرّف القناة (Channel ID): UCgzhXCxn3RtZI7IsMb2NL8A
+  - الرابط المباشر: https://www.youtube.com/@HAJRQuran
+  - الإيميل المربوط: hajrpulse@gmail.com
+  - الحالة: نشطة وتنشر تلقائياً (البلد: السعودية | غير مخصصة للأطفال | إشعار الربح مفعّل)
+  - الإحصاءات الحالية: 5 مشتركين | 626 مشاهدة | 59 إعجاب | مقطعا Shorts منشوران
+
+• إنستغرام (Instagram):
+  - المعرّف (Handle): @hajrquran
+  - الرابط: https://www.instagram.com/hajrquran/
+  - الإيميل المربوط: hajrpulse.official+quran@gmail.com
+
+• ثريدز (Threads):
+  - المعرّف (Handle): @hajrquran
+  - الرابط: https://www.threads.net/@hajrquran
+  - الإيميل المربوط: hajrpulse.official+quran@gmail.com
+
+• بوت تيليجرام (Telegram Bot):
+  - اسم البوت: HAJR Quran | هجر قرآن
+  - المعرّف (Username): @hajr_quran_bot
+  - الرابط: https://t.me/hajr_quran_bot
+  - الإيميل الإداري المربوط: hajrpulse.official+quran@gmail.com
+
+• تطبيق ريدز (Redz - com.homyt.thex):
+  - المعرّف المقترح/المعتمد: @hajrquran
+  - الإيميل المربوط: hajrpulse.official+quran@gmail.com
+  - صفحة القناة المخصصة: https://hajrpulse.github.io/quran.html
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3) مشروع: هجر سُنّة | HAJR Sunnah
+   المجال: الأحاديث النبوية الصحيحة فقط (صحيح البخاري وصحيح مسلم / متفق عليه)
+           بالتشكيل الكامل و7 لغات عالمية (AR, EN, ID, UR, FR, ES, TR, RU = 140 شورت فريد)
+   مجلد التشغيل الآلي على السيرفر: C:\hajr-sunnah-auto
+   الصفحة المخصصة على الويب: https://hajrpulse.github.io/sunnah.html
+   حماية التسخين (Warmup Safety): 14 يوماً بدون روابط أفلييت خارجية (روابط البوابة الرسمية وتيليجرام فقط)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• يوتيوب (القناة الرسمية المفعّلة):
+  - اسم القناة: HAJR Sunnah | هجر سُنّة
+  - المعرّف (Handle): @HAJRSunnah
+  - معرّف القناة (Channel ID): UCxJf4LcZR_MG6Qn4zhyASsQ
+  - الرابط المباشر: https://www.youtube.com/@HAJRSunnah
+  - الإيميل المربوط: j61076776@gmail.com (اسم حساب جوجل: HAJR Sunnah)
+  - الحالة: نشطة ومفعّلة بالكامل (المنشور الأول: https://www.youtube.com/shorts/oIp0v9V1x9Y)
+
+• إنستغرام (Instagram):
+  - المعرّف (Handle): @hajrsunnah
+  - الرابط: https://www.instagram.com/hajrsunnah/
+  - الإيميل المربوط: j61076776@gmail.com
+  - آخر ريل منشور: https://www.instagram.com/hajrsunnah/reel/De4yFUzPpXF/
+
+• ثريدز (Threads):
+  - المعرّف (Handle): @hajrsunnah
+  - الرابط: https://www.threads.net/@hajrsunnah
+  - الإيميل المربوط: j61076776@gmail.com
+  - آخر منشور: https://www.threads.com/@hajrsunnah/post/De4yVZBDgZ0
+
+• بوت تيليجرام (Telegram Bot):
+  - اسم البوت: HAJR Sunnah | هجر سُنّة
+  - المعرّف (Username): @HAJRNewsAlertsBot
+  - الرابط: https://t.me/HAJRNewsAlertsBot
+  - الإيميل الإداري المربوط: j61076776@gmail.com
+
+• تطبيق ريدز (Redz - com.homyt.thex):
+  - المعرّف المقترح/المعتمد: @hajrsunnah
+  - الإيميل المربوط: j61076776@gmail.com
+  - صفحة القناة المخصصة: https://hajrpulse.github.io/sunnah.html
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4) مشروع: هجر للذكاء الاصطناعي | HAJR AI
+   المجال: أدوات الذكاء الاصطناعي، الأتمتة، الوكلاء الأذكياء (AI Agents & No-Code Workflows)
+           بـ 5 لغات عالمية (AR, EN, FR, ES, TR = 20 أداة × 5 لغات = 100 شورت فريد + مقاطع 8-10 دقائق)
+   مجلد التشغيل الآلي على السيرفر (لمرحلة الربط النهائي): C:\hajr-ai-auto
+   الصفحة المخصصة على الويب: https://hajrpulse.github.io/ai.html
+   حماية التسخين (Warmup Safety): 14 يوماً بدون روابط أفلييت خارجية في وصف يوتيوب (توجيه لـ ai.html وتيليجرام فقط)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• يوتيوب (القناة المعتمدة رسمياً):
+  - اسم القناة: HAJR AI | هجر للذكاء الاصطناعي
+  - المعرّف (Handle): @HAJRAI
+  - الرابط المباشر: https://www.youtube.com/@HAJRAI
+  - الإيميل المربوط رسمياً: saed45449@gmail.com
+  - الشعار والبانر المجهزان: /workspace/hajr-clips/hajr-ai-logo.png | hajr-ai-banner.png
+  - محرك التوليد الآلي المدقق: /workspace/hajr-clips/hajr-ai/ai_short.py + ai_tools.json (100 شورت فريد، Frame 0 بدون fade)
+
+• إنستغرام وثريدز وتيك توك وريدز (Redz):
+  - المعرّف المعتمد: @hajrai
+  - الإيميل المربوط: saed45449@gmail.com
+  - بوت تيليجرام الرسمي: @VibeMediaSignals_bot (https://t.me/VibeMediaSignals_bot)
+  - صفحة القناة المخصصة: https://hajrpulse.github.io/ai.html
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5) مشروع: هجر شِفاء | HAJR Shifa
+   المجال: الطب النبوي الصحيح (١٠٠٪ قرآن كريم وصحيح البخاري ومسلم فقط — صفر أحاديث ضعيفة أو خلطات شعبية)
+           مقروناً بأرقام أبحاث سريرية حقيقية مدققة في PubMed (PMID) بـ 5 لغات أساسية (AR, EN, ID, UR, FR + DE, ES)
+   مجلد التشغيل الآلي على السيرفر (لمرحلة الربط النهائي): C:\hajr-shifa-auto
+   الصفحة المخصصة على الويب: https://hajrpulse.github.io/shifa.html
+   حماية التسخين (Warmup Safety): 14 يوماً بدون روابط أفلييت خارجية في وصف يوتيوب (توجيه لـ shifa.html وتيليجرام فقط)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• يوتيوب (القناة المعتمدة رسمياً):
+  - اسم القناة: HAJR Shifa | هجر شِفاء
+  - المعرّف (Handle): @HAJRShifa
+  - الرابط المباشر: https://www.youtube.com/@HAJRShifa
+  - الإيميل المربوط رسمياً: s10223936@gmail.com
+  - الشعار والبانر المجهزان: /workspace/hajr-clips/hajr-shifa-logo.png | hajr-shifa-banner.png
+  - محرك التوليد الآلي المدقق: /workspace/hajr-clips/hajr-shifa/shifa_short.py + remedies.json (20 موضوعاً موثقاً بـ PMIDs حقيقية، Frame 0 بدون fade)
+
+• إنستغرام وثريدز وتيك توك وريدز (Redz):
+  - المعرّف المعتمد: @hajrshifa
+  - الإيميل المربوط: s10223936@gmail.com
+  - بوت تيليجرام الرسمي: @VibeMediaSignals_bot (https://t.me/VibeMediaSignals_bot)
+  - صفحة القناة المخصصة: https://hajrpulse.github.io/shifa.html
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6) مشروع: بيت أبو حمزة | Bayt Abu Hamza
+   المجال: مسلسل كرتوني عائلي كوميدي تعليمي وتربوي هادف بتقنية ثلاثية الأبعاد (3D)
+           (الشخصيات: أبو حمزة، أم حمزة "ميساء"، آية، جنى، حمزة، رهف "رورو")
+   الرسالة التربوية: تتضمن كل حلقة مشهداً تربوياً وتعليمياً دافئاً ومحبباً يعلّم السلوك الصحيح والقيم الأصيلة بأسلوب لطيف وقريب للقلب لكل أفراد الأسرة حول العالم.
+   البايو الموحّد لجميع المنصات:
+     «🏠 بيت أبو حمزة | Bayt Abu Hamza (@baytabuhamza) — مسلسل أنيميشن عائلي كوميدي تعليمي وتربوي هادف بتقنية 3D ✨ يوميات دافئة مع (أبو حمزة، أم حمزة، آية، جنى، حمزة، ورهف "رورو") نزرع فيها القيم الجميلة ونعلّم الصح بأسلوب محبّب لكل عيلة بالعالم 🌍❤️»
+   الهاشتاقات العالمية المعتمدة (Global Reach Hashtags):
+     #بيت_أبو_حمزة #عائلة_أبو_حمزة #كرتون_تعليمي #قصص_عائلية_هادفة #تربية_إيجابية #كرتون_عائلي #أنيميشن_عربي #كوميديا_عائلية #تعليم_الأطفال #قيم_عائلية #الأردن #السعودية #الإمارات #قطر #الكويت #البحرين #عمان #مصر #فلسطين #سوريا #لبنان #العراق #المغرب #الجزائر #تونس #ليبيا #تركيا #ماليزيا #إندونيسيا #ألمانيا #بريطانيا #فرنسا #إسبانيا #أمريكا #كندا #أستراليا #BaytAbuHamza #FamilyAnimation #EducationalCartoon #3DAnimation #PurposefulContent #FamilyValues #PositiveParenting #ArabFamily #MuslimFamily #KidsLearning #GlobalFamily #USA #UK #Canada #Germany #France #Spain #Sweden #Turkey #Indonesia #Malaysia #Australia
+   محرك الاستوديو الآلي اليومي (03:00 فجراً): /workspace/hajr-clips/family-series/studio-bot/
+   ملف البايو والهاشتاقات الرسمي: /workspace/hajr-clips/family-series/brand/channel_bio_and_hashtags.txt
+   الصفحة المخصصة على الويب: https://hajrpulse.github.io/baytabuhamza.html
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• يوتيوب (القناة الرسمية المفعّلة):
+  - اسم القناة: بيت أبو حمزة
+  - المعرّف (Handle): @baytabuhamza
+  - معرّف القناة (Channel ID): UCqOaBMVJ3AkNnq25DylDBLQ
+  - الرابط المباشر: https://www.youtube.com/@baytabuhamza
+  - الإيميل المربوط: amjed.nawasra80@gmail.com
+  - الحالة: نشطة ومفعّلة بالكامل (البلد: السعودية | غير مخصصة للأطفال | إشعار الربح مفعّل)
+  - تنبيه هام: حساب يوتيوب بريميوم الشخصي (Amjadnawasra80@gmail.com / @amjednawasra1179) معزول ومستقل تماماً ولا يُلمس أبداً.
+
+• إنستغرام (Instagram):
+  - المعرّف (Handle): @baytabuhamza
+  - الرابط: https://www.instagram.com/baytabuhamza/
+  - الإيميل المربوط: hajrpulse.official+family@gmail.com
+
+• تطبيق ريدز (Redz - com.homyt.thex):
+  - المعرّف المقترح/المعتمد: @baytabuhamza
+  - الإيميل المربوط: amjed.nawasra80@gmail.com
+  - صفحة القناة المخصصة: https://hajrpulse.github.io/baytabuhamza.html
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7) قائمة إيميلات Google الـ 11 على المتصفح وحالة كل حساب
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 1. Amjadnawasra80@gmail.com   — حساب شخصي (YouTube Premium: @amjednawasra1179) [معزول تماماً ولا يُلمس]
+ 2. amjed.nawasra80@gmail.com  — مربوط بقناة يوتيوب: بيت أبو حمزة (@baytabuhamza | UCqOaBMVJ3AkNnq25DylDBLQ)
+ 3. s05553073@gmail.com        — مربوط بقناة يوتيوب: HAJR Pulse Official (@HAJRPulse | UCX_wN2ElzJe_Y_xCi7hxo-Q)
+ 4. j61076776@gmail.com        — مربوط بقناة يوتيوب وإنستغرام وثريدز: HAJR Sunnah (@HAJRSunnah | UCxJf4LcZR_MG6Qn4zhyASsQ)
+ 5. saed45449@gmail.com        — مربوط رسمياً بقناة: HAJR AI | هجر للذكاء الاصطناعي (@HAJRAI)
+ 6. s10223936@gmail.com        — مربوط رسمياً بقناة: HAJR Shifa | هجر شِفاء (@HAJRShifa)
+ 7. rahaf119980@gmail.com      — (رهف امجد) حساب Google جاهز بدون قناة يوتيوب (احتياطي)
+ 8. g02457817@gmail.com        — (Jana Amjed) حساب Google جاهز بدون قناة يوتيوب (احتياطي)
+ 9. m95770720@gmail.com        — (Mohammad Ahmad) حساب Google جاهز بدون قناة يوتيوب (احتياطي)
+10. nawasraamjed@gmail.com     — (Amjed Nawasra) حساب Google جاهز بدون قناة يوتيوب (احتياطي)
+11. a42984293@gmail.com        — (أبو حمزة) حساب Google جاهز بدون قناة يوتيوب (احتياطي)
+
+إيميلات الشبكة الإضافية:
+• hajrpulse@gmail.com          — مربوط بقناة يوتيوب: HAJR Quran (@HAJRQuran | UCgzhXCxn3RtZI7IsMb2NL8A)
+• hajrpulse.official@gmail.com — الإيميل الإداري الرئيسي لـ GitHub (hajrpulse) وتطبيق Meta وحسابات التواصل الاجتماعي
+• amjad.nawasra@hotmail.com    — إيميل التأكيد الإضافي لتطبيق Meta for Developers
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8) حسابات الإدارة والربط التقني ولوحات التحكم (بدون كلمات مرور)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• تطبيق Meta for Developers:
+  - اسم التطبيق: HAJR Pulse Publisher
+  - معرّف التطبيق (App ID): 1586872452689048
+  - الإيميل الأساسي المربوط: hajrpulse.official@gmail.com
+  - إيميل المطور الإضافي: amjad.nawasra@hotmail.com
+  - رقم الواتساب المربوط للتأكيد: +962795954464
+
+• حساب GitHub المخصص للشبكة (عام للإحصاءات وصفحات القنوات فقط):
+  - اسم الحساب: hajrpulse
+  - الإيميل المربوط: hajrpulse.official@gmail.com
+  - مستودع الصفحات والداشبورد: https://github.com/hajrpulse/hajrpulse.github.io
+  - مستودع الإحصاءات الحية: https://github.com/hajrpulse/hajr-stats
+  - تنبيه: حساب GitHub الشخصي (amjadnawasra80-arch) معزول تماماً ولا يُستخدم للشبكة.
+
+• روابط الصفحات والداشبورد المباشرة:
+  - البوابة الرئيسية: https://hajrpulse.github.io/
+  - لوحة التحكم الشاملة (Dashboard): https://hajrpulse.github.io/dashboard.html
+  - صفحة هجر بلس: https://hajrpulse.github.io/pulse.html
+  - صفحة هجر قرآن: https://hajrpulse.github.io/quran.html
+  - صفحة هجر سُنّة: https://hajrpulse.github.io/sunnah.html
+  - صفحة هجر للذكاء الاصطناعي: https://hajrpulse.github.io/ai.html
+  - صفحة هجر شِفاء: https://hajrpulse.github.io/shifa.html
+  - صفحة بيت أبو حمزة: https://hajrpulse.github.io/baytabuhamza.html
+================================================================================
+</pre>
+      </div>
+    </div>
+
+    <!-- SECTION 4: DEDICATED CHANNEL WEB PAGES -->
+    <div id="section-pages">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">🌐 الصفحات المخصصة لكل قناة على الويب وتطبيق Redz (hajrpulse.github.io)</div>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">⚡ هجر بلس | HAJR Pulse</div>
+            <div style="font-weight:800; margin:6px 0;"><a href="https://hajrpulse.github.io/pulse.html" target="_blank" rel="noopener">hajrpulse.github.io/pulse.html ↗</a></div>
+            <div class="kpi-sub">صفحة الهبوط الرسمية لقناة الأسواق والمال والذكاء الاصطناعي</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">🕋 هجر قرآن | HAJR Quran</div>
+            <div style="font-weight:800; margin:6px 0;"><a href="https://hajrpulse.github.io/quran.html" target="_blank" rel="noopener">hajrpulse.github.io/quran.html ↗</a></div>
+            <div class="kpi-sub">صفحة التلاوات القرآنية الخاشعة والروابط المباشرة</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">📜 هجر سُنّة | HAJR Sunnah</div>
+            <div style="font-weight:800; margin:6px 0;"><a href="https://hajrpulse.github.io/sunnah.html" target="_blank" rel="noopener">hajrpulse.github.io/sunnah.html ↗</a></div>
+            <div class="kpi-sub">صفحة الأحاديث النبوية الصحيحة (البخاري ومسلم) بـ 7 لغات</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">🤖 هجر AI | HAJR AI</div>
+            <div style="font-weight:800; margin:6px 0;"><a href="https://hajrpulse.github.io/ai.html" target="_blank" rel="noopener">hajrpulse.github.io/ai.html ↗</a></div>
+            <div class="kpi-sub">صفحة أدوات الذكاء الاصطناعي وأتمتة الأعمال (20 منظومة × 5 لغات)</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">🌿 هجر شِفاء | HAJR Shifa</div>
+            <div style="font-weight:800; margin:6px 0;"><a href="https://hajrpulse.github.io/shifa.html" target="_blank" rel="noopener">hajrpulse.github.io/shifa.html ↗</a></div>
+            <div class="kpi-sub">صفحة الطب النبوي الصحيح (١٠٠٪ قرآن وبخاري ومسلم) وأبحاث PubMed</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">🏠 بيت أبو حمزة | Bayt Abu Hamza</div>
+            <div style="font-weight:800; margin:6px 0;"><a href="https://hajrpulse.github.io/baytabuhamza.html" target="_blank" rel="noopener">hajrpulse.github.io/baytabuhamza.html ↗</a></div>
+            <div class="kpi-sub">صفحة المسلسل الكرتوني العائلي الكوميدي التعليمي والتربوي الهادف (3D)</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">📊 لوحة التحكم الحية</div>
+            <div style="font-weight:800; margin:6px 0;"><a href="https://hajrpulse.github.io/dashboard.html" target="_blank" rel="noopener">hajrpulse.github.io/dashboard.html ↗</a></div>
+            <div class="kpi-sub">النسخة الإلكترونية المباشرة من هذه الداشبورد</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast-msg">تم النسخ بنجاح!</div>
+
+  <script>
+    const STATS_URL = "https://raw.githubusercontent.com/hajrpulse/hajr-stats/main/stats.json";
+    let currentStats = {"generated_at": "2026-10-24T22:25:00+03:00", "timezone": "Asia/Riyadh", "accounts": [{"name": "Pulse", "label": "HAJR Pulse | هجر بلس", "folder": "C:\\hajr-pulse-auto", "email": "s05553073@gmail.com (YouTube) / hajrpulse.official@gmail.com (Social)", "page_url": "https://hajrpulse.github.io/pulse.html", "platforms": [{"platform": "youtube", "handle": "@HAJRPulse", "channel_id": "UCX_wN2ElzJe_Y_xCi7hxo-Q", "url": "https://www.youtube.com/@HAJRPulse", "email": "s05553073@gmail.com", "status": "ok", "missing": [], "source": "public_page+rss", "totals": {"followers": 1, "views": 0, "posts_count": 0, "views_recent": 0}, "posts": []}, {"platform": "instagram", "handle": "@hajrpulse", "url": "https://www.instagram.com/hajrpulse/", "email": "hajrpulse.official@gmail.com", "status": "ok", "missing": [], "totals": {"followers": 0, "following": 0, "posts_count": 0, "likes_recent": 0, "comments_recent": 0, "views_recent": 0}, "posts": []}, {"platform": "threads", "handle": "@hajrpulse", "url": "https://www.threads.net/@hajrpulse", "email": "hajrpulse.official@gmail.com", "status": "ok", "missing": ["account insights (needs threads_manage_insights)"], "totals": {"followers": null, "views": null, "posts_count_recent": 0}, "posts": []}, {"platform": "tiktok", "handle": "@hajrpulse", "url": "https://www.tiktok.com/@hajrpulse", "email": "hajrpulse.official@gmail.com", "status": "ok", "missing": ["بانتظار ربط مفاتيح Sandbox في ملف الإحصاءات"], "totals": {"followers": null, "views": null, "posts_count": 0}, "posts": []}, {"platform": "telegram", "handle": "@VibeMediaSignals_bot", "url": "https://t.me/VibeMediaSignals_bot", "email": "hajrpulse.official@gmail.com", "status": "ok", "missing": [], "totals": {"followers": null, "views": null, "posts_count": null}, "posts": []}, {"platform": "redz", "handle": "@hajrpulse", "url": "https://hajrpulse.github.io/pulse.html", "email": "hajrpulse.official@gmail.com", "status": "ready", "missing": [], "totals": {"followers": 0, "views": 0, "posts_count": 0}, "posts": []}]}, {"name": "Quran", "label": "HAJR Quran | هجر قرآن", "folder": "C:\\hajr-quran-auto", "email": "hajrpulse@gmail.com (YouTube) / hajrpulse.official+quran@gmail.com (Social)", "page_url": "https://hajrpulse.github.io/quran.html", "platforms": [{"platform": "youtube", "handle": "@HAJRQuran", "channel_id": "UCgzhXCxn3RtZI7IsMb2NL8A", "url": "https://www.youtube.com/@HAJRQuran", "email": "hajrpulse@gmail.com", "status": "ok", "missing": ["oauth_stats: token.json has upload-only scope"], "source": "public_page+rss", "totals": {"followers": 5, "views": null, "posts_count": 2, "views_recent": 626}, "posts": [{"id": "42ixawDwY8Q", "title": "سورة البقرة (6-9) بصوت أحمد بن علي العجمي #Shorts", "url": "https://youtube.com/shorts/42ixawDwY8Q", "published": "2026-10-24T15:49:12+00:00", "views": 83, "likes": 16, "comments": null}, {"id": "rkrExUj7xLI", "title": "سورة البقرة (1-5) بصوت مشاري راشد العفاسي #Shorts", "url": "https://youtube.com/shorts/rkrExUj7xLI", "published": "2026-10-23T16:05:11+00:00", "views": 536, "likes": 42, "comments": null}]}, {"platform": "instagram", "handle": "@hajrquran", "url": "https://www.instagram.com/hajrquran/", "email": "hajrpulse.official+quran@gmail.com", "status": "ok", "missing": [], "totals": {"followers": 0, "following": 0, "posts_count": 0, "likes_recent": 0, "comments_recent": 0, "views_recent": 0}, "posts": []}, {"platform": "threads", "handle": "@hajrquran", "url": "https://www.threads.net/@hajrquran", "email": "hajrpulse.official+quran@gmail.com", "status": "ok", "missing": ["account insights (needs threads_manage_insights)"], "totals": {"followers": null, "views": null, "posts_count_recent": 0}, "posts": []}, {"platform": "telegram", "handle": "@hajr_quran_bot", "url": "https://t.me/hajr_quran_bot", "email": "hajrpulse.official+quran@gmail.com", "status": "ok", "missing": [], "totals": {"followers": null, "views": null, "posts_count": null}, "posts": []}, {"platform": "redz", "handle": "@hajrquran", "url": "https://hajrpulse.github.io/quran.html", "email": "hajrpulse.official+quran@gmail.com", "status": "ready", "missing": [], "totals": {"followers": 0, "views": 0, "posts_count": 0}, "posts": []}]}, {"name": "Sunnah", "label": "HAJR Sunnah | هجر سُنّة", "folder": "C:\\hajr-sunnah-auto", "email": "j61076776@gmail.com", "page_url": "https://hajrpulse.github.io/sunnah.html", "platforms": [{"platform": "youtube", "handle": "@HAJRSunnah", "channel_id": "UCxJf4LcZR_MG6Qn4zhyASsQ", "url": "https://www.youtube.com/@HAJRSunnah", "email": "j61076776@gmail.com", "status": "ok", "missing": [], "source": "public_page+rss", "totals": {"followers": 1, "views": 0, "posts_count": 1, "views_recent": 0}, "posts": [{"id": "oIp0v9V1x9Y", "title": "حديث «إنما الأعمال بالنيات» (متفق عليه — البخاري ومسلم) #Shorts", "url": "https://www.youtube.com/shorts/oIp0v9V1x9Y", "published": "2026-10-24T18:15:00+00:00", "views": 1, "likes": 1, "comments": 0}]}, {"platform": "instagram", "handle": "@hajrsunnah", "url": "https://www.instagram.com/hajrsunnah/", "email": "j61076776@gmail.com", "status": "ok", "missing": ["insights (needs instagram_business_manage_insights)"], "totals": {"followers": 0, "following": 0, "posts_count": 1, "likes_recent": 1, "comments_recent": 0, "views_recent": null}, "posts": [{"id": "De4yFUzPpXF", "title": "حديث «إنما الأعمال بالنيات» — @hajrsunnah", "url": "https://www.instagram.com/hajrsunnah/reel/De4yFUzPpXF/", "published": "2026-10-24T18:16:00+0000", "type": "VIDEO", "likes": 1, "comments": 0, "views": null}]}, {"platform": "threads", "handle": "@hajrsunnah", "url": "https://www.threads.net/@hajrsunnah", "email": "j61076776@gmail.com", "status": "ok", "missing": ["account insights (needs threads_manage_insights)"], "totals": {"followers": null, "views": null, "posts_count_recent": 1}, "posts": [{"id": "De4yVZBDgZ0", "title": "حديث «إنما الأعمال بالنيات» — @hajrsunnah", "url": "https://www.threads.com/@hajrsunnah/post/De4yVZBDgZ0", "published": "2026-10-24T18:18:00+0000", "type": "VIDEO", "views": null, "likes": null, "comments": null}]}, {"platform": "telegram", "handle": "@HAJRNewsAlertsBot", "url": "https://t.me/HAJRNewsAlertsBot", "email": "j61076776@gmail.com", "status": "ok", "missing": [], "totals": {"followers": null, "views": null, "posts_count": null}, "posts": []}, {"platform": "redz", "handle": "@hajrsunnah", "url": "https://hajrpulse.github.io/sunnah.html", "email": "j61076776@gmail.com", "status": "ready", "missing": [], "totals": {"followers": 0, "views": 0, "posts_count": 0}, "posts": []}]}, {"name": "AI", "label": "HAJR AI | هجر للذكاء الاصطناعي", "folder": "C:\\hajr-ai-auto", "email": "saed45449@gmail.com", "page_url": "https://hajrpulse.github.io/ai.html", "platforms": [{"platform": "youtube", "handle": "@HAJRAI", "url": "https://www.youtube.com/@HAJRAI", "email": "saed45449@gmail.com", "status": "ready", "totals": {"followers": 0, "views": 0, "posts_count": 0}}, {"platform": "instagram", "handle": "@hajrai", "url": "https://www.instagram.com/hajrai/", "email": "saed45449@gmail.com", "status": "ready", "totals": {"followers": 0, "views": 0, "posts_count": 0}}, {"platform": "threads", "handle": "@hajrai", "url": "https://www.threads.net/@hajrai", "email": "saed45449@gmail.com", "status": "ready", "totals": {"followers": 0, "views": 0, "posts_count": 0}}, {"platform": "telegram", "handle": "@VibeMediaSignals_bot", "url": "https://t.me/VibeMediaSignals_bot", "email": "saed45449@gmail.com", "status": "ok", "totals": {"followers": null, "views": null, "posts_count": null}}, {"platform": "redz", "handle": "@hajrai", "url": "https://hajrpulse.github.io/ai.html", "email": "saed45449@gmail.com", "status": "ready", "totals": {"followers": 0, "views": 0, "posts_count": 0}}]}, {"name": "Shifa", "label": "HAJR Shifa | هجر شِفاء", "folder": "C:\\hajr-shifa-auto", "email": "s10223936@gmail.com", "page_url": "https://hajrpulse.github.io/shifa.html", "platforms": [{"platform": "youtube", "handle": "@HAJRShifa", "url": "https://www.youtube.com/@HAJRShifa", "email": "s10223936@gmail.com", "status": "ready", "totals": {"followers": 0, "views": 0, "posts_count": 0}}, {"platform": "instagram", "handle": "@hajrshifa", "url": "https://www.instagram.com/hajrshifa/", "email": "s10223936@gmail.com", "status": "ready", "totals": {"followers": 0, "views": 0, "posts_count": 0}}, {"platform": "threads", "handle": "@hajrshifa", "url": "https://www.threads.net/@hajrshifa", "email": "s10223936@gmail.com", "status": "ready", "totals": {"followers": 0, "views": 0, "posts_count": 0}}, {"platform": "telegram", "handle": "@VibeMediaSignals_bot", "url": "https://t.me/VibeMediaSignals_bot", "email": "s10223936@gmail.com", "status": "ok", "totals": {"followers": null, "views": null, "posts_count": null}}, {"platform": "redz", "handle": "@hajrshifa", "url": "https://hajrpulse.github.io/shifa.html", "email": "s10223936@gmail.com", "status": "ready", "totals": {"followers": 0, "views": 0, "posts_count": 0}}]}, {"name": "BaytAbuHamza", "label": "بيت أبو حمزة | Bayt Abu Hamza", "folder": "يدوي (بدون بوت)", "email": "amjed.nawasra80@gmail.com (YouTube) / hajrpulse.official+family@gmail.com (IG)", "page_url": "https://hajrpulse.github.io/baytabuhamza.html", "platforms": [{"platform": "youtube", "handle": "@baytabuhamza", "channel_id": "UCqOaBMVJ3AkNnq25DylDBLQ", "url": "https://www.youtube.com/@baytabuhamza", "email": "amjed.nawasra80@gmail.com", "status": "ok", "missing": [], "source": "public_page+rss", "totals": {"followers": 0, "views": 0, "posts_count": 0, "views_recent": 0}, "posts": []}, {"platform": "instagram", "handle": "@baytabuhamza", "url": "https://www.instagram.com/baytabuhamza/", "email": "hajrpulse.official+family@gmail.com", "status": "ok", "missing": [], "totals": {"followers": 0, "following": 0, "posts_count": 0, "likes_recent": 0, "comments_recent": 0, "views_recent": 0}, "posts": []}, {"platform": "redz", "handle": "@baytabuhamza", "url": "https://hajrpulse.github.io/baytabuhamza.html", "email": "amjed.nawasra80@gmail.com", "status": "ready", "missing": [], "totals": {"followers": 0, "views": 0, "posts_count": 0}, "posts": []}]}], "history": {"2026-10-23": {"Pulse/youtube": {"followers": null, "views": null, "posts_count": null}, "Pulse/instagram": {}, "Pulse/threads": {}, "Quran/youtube": {"followers": 2, "views": null, "posts_count": null, "views_recent": 272}, "Quran/instagram": {}, "Quran/threads": {}}, "2026-10-24": {"Pulse/youtube": {"followers": 1, "views": 0, "posts_count": 0, "views_recent": 0}, "Pulse/instagram": {"followers": 0, "following": 0, "posts_count": 0, "likes_recent": 0, "comments_recent": 0, "views_recent": 0}, "Pulse/threads": {"followers": null, "views": null, "posts_count_recent": 0}, "Quran/youtube": {"followers": 5, "views": null, "posts_count": 2, "views_recent": 619}, "Quran/instagram": {"followers": 0, "following": 0, "posts_count": 0, "likes_recent": 0, "comments_recent": 0, "views_recent": 0}, "Quran/threads": {"followers": null, "views": null, "posts_count_recent": 0}, "Sunnah/youtube": {"followers": 1, "views": 0, "posts_count": 0, "views_recent": 0}, "Sunnah/instagram": {"followers": 0, "following": 0, "posts_count": 2, "likes_recent": 1, "comments_recent": 0, "views_recent": null}, "Sunnah/threads": {"followers": null, "views": null, "posts_count_recent": 2}, "BaytAbuHamza/youtube": {"followers": 0, "views": 0, "posts_count": 0, "views_recent": 0}}}};
+    let selectedChannel = "ALL";
+
+    function showToast(msg) {
+      const t = document.getElementById("toast-msg");
+      t.textContent = msg;
+      t.style.display = "block";
+      setTimeout(() => { t.style.display = "none"; }, 2600);
+    }
+
+    function copyText(txt) {
+      navigator.clipboard.writeText(txt).then(() => {
+        showToast("تم نسخ: " + txt);
+      });
+    }
+
+    function copyAllAccounts() {
+      const txt = document.getElementById("notepad-content").textContent;
+      navigator.clipboard.writeText(txt).then(() => {
+        showToast("تم نسخ دليل الحسابات والإيميلات بالكامل!");
+      });
+    }
+
+    function downloadNotepad() {
+      const raw = document.getElementById("notepad-content").textContent.replace(/\r?\n/g, "\r\n");
+      const blob = new Blob(["\uFEFF" + raw], { type: "text/plain;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "HAJR_Accounts.txt";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast("تم تنزيل ملف HAJR_Accounts.txt!");
+    }
+
+    function switchTab(mode, btn) {
+      document.querySelectorAll(".nav-tab").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const perf = document.getElementById("section-performance");
+      const dir = document.getElementById("section-directory");
+      const note = document.getElementById("section-notepad");
+      const pages = document.getElementById("section-pages");
+      if (mode === "tab-all") {
+        perf.style.display = "block";
+        dir.style.display = "block";
+        note.style.display = "block";
+        pages.style.display = "block";
+      } else if (mode === "tab-directory") {
+        perf.style.display = "none";
+        dir.style.display = "block";
+        note.style.display = "none";
+        pages.style.display = "none";
+      } else if (mode === "tab-notepad") {
+        perf.style.display = "none";
+        dir.style.display = "none";
+        note.style.display = "block";
+        pages.style.display = "none";
+      } else if (mode === "tab-pages") {
+        perf.style.display = "none";
+        dir.style.display = "none";
+        note.style.display = "none";
+        pages.style.display = "block";
+      }
+    }
+
+    function filterChannels(ch, btn) {
+      selectedChannel = ch;
+      document.querySelectorAll("#channel-filters .filter-pill").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderChannels();
+    }
+
+    function renderChannels() {
+      const container = document.getElementById("channels-cards-container");
+      const accounts = (currentStats.accounts || []).filter(a => selectedChannel === "ALL" || a.name === selectedChannel);
+      container.innerHTML = accounts.map(acc => {
+        const platformsHtml = (acc.platforms || []).map(p => {
+          const t = p.totals || {};
+          const followers = t.followers !== undefined && t.followers !== null ? t.followers : "—";
+          const views = (t.views_recent !== undefined && t.views_recent !== null) ? t.views_recent : (t.views !== undefined && t.views !== null ? t.views : "—");
+          const posts = (t.posts_count !== undefined && t.posts_count !== null) ? t.posts_count : (t.posts_count_recent !== undefined && t.posts_count_recent !== null ? t.posts_count_recent : "—");
+          const pClass = "plat-" + (p.platform || "youtube");
+          return `
+            <div class="plat-row">
+              <div class="plat-left">
+                <span class="plat-badge ${pClass}">${p.platform}</span>
+                <a href="${p.url || '#'}" target="_blank" rel="noopener" class="ltr" style="font-weight:800;">${p.handle || ''}</a>
+                ${p.email ? `<span class="email-chip" onclick="copyText('${p.email}')" title="انقر لنسخ الإيميل المربوط">📧 ${p.email}</span>` : ''}
+              </div>
+              <div class="plat-metrics">
+                <span>المتابعون: <b>${followers}</b></span>
+                <span>المشاهدات: <b>${views}</b></span>
+                <span>المنشورات: <b>${posts}</b></span>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        return `
+          <div class="channel-card">
+            <div class="channel-top">
+              <div>
+                <div class="channel-name">${acc.label || acc.name}</div>
+                <div class="channel-desc">المجلد: <span class="ltr">${acc.folder || '—'}</span></div>
+              </div>
+              ${acc.page_url ? `<a class="btn" style="padding:5px 12px; font-size:0.78rem;" href="${acc.page_url}" target="_blank" rel="noopener">صفحة القناة ↗</a>` : ''}
+            </div>
+            <div style="margin-bottom:10px; font-size:0.82rem; color:var(--text-muted);">
+              الإيميل الرئيسي: <span class="email-chip" onclick="copyText('${(acc.email || '').split(' ')[0]}')">${acc.email || '—'}</span>
+            </div>
+            <div class="platform-list">${platformsHtml}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    async function refreshLiveStats() {
+      try {
+        showToast("جاري جلب أحدث الإحصاءات الحية...");
+        const res = await fetch(STATS_URL + "?t=" + Date.now());
+        if (res.ok) {
+          const remote = await res.json();
+          if (remote && Array.isArray(remote.accounts) && remote.accounts.length >= 6) {
+            currentStats = remote;
+          } else if (remote && Array.isArray(remote.accounts)) {
+            const byName = Object.fromEntries(remote.accounts.map(a => [a.name, a]));
+            currentStats.accounts = currentStats.accounts.map(a => byName[a.name] ? {...a, ...byName[a.name]} : a);
+          }
+          renderChannels();
+          showToast("تم تحديث الإحصاءات الحية بنجاح!");
+        }
+      } catch (e) {
+        renderChannels();
+        showToast("يتم عرض أحدث نسخة محفوظة في الداشبورد");
+      }
+    }
+
+    renderChannels();
+  </script>
+</body>
+</html>
